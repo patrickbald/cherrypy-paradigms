@@ -8,7 +8,7 @@ class TestCherrypyPrimer(unittest.TestCase):
 
         
        
-        SITE_URL = 'http://student10.cse.nd.edu:51075' #Replace this your port numberand machine. if testing on localhost, replace machine name and number with localhost
+        SITE_URL = 'http://student04.cse.nd.edu:51075' #Replace this your port numberand machine. if testing on localhost, replace machine name and number with localhost
         DICT_URL = SITE_URL + '/dictionary/'
 
         def reset_data(self):

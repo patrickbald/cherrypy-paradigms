@@ -20,8 +20,6 @@ class DictionaryController(object):
         output = {'result' : 'success'} # 1.
         key = str(key) # 2.
 
-        print(self.myd)
-
         try:
             house = self.get_value(key)
             if house is not None:
@@ -57,23 +55,41 @@ class DictionaryController(object):
         # 5. return the string response
         return json.dumps(output)
 
-    def GET_INDEX(self, key):
-        output = {'result': 'success'}
-        key = str(key) # 2. cast the input into the desired type
-        # 3. (only for body)get body of message
+    def GET_INDEX(self):
+        # Return all the key value pairs
+        output = {'result' : 'success'} 
+        output['entries'] = list(map(lambda x : {"value": x[1], "key": x[0]}, self.myd.items()))
+        return json.dumps(output)
+
+    def POST_INDEX(self):
+				# Add or replace a new key value
+        output = {'result' : 'success'} 
         data_json = json.loads(cherrypy.request.body.read())
 
-       
-    def POST_INDEX(self):
-        #TODO
-        pass
+        try:
+            key = data_json['key']
+            val = data_json['value'] 
+            self.add_entry(key, val)
+        except Exception as ex:
+            output['result'] = 'error'
+            output['message'] = str(ex)
+
+        return json.dumps(output)
 
     def DELETE_KEY(self, key):
-        #TODO
-        pass
+				# Delete specific key value pair
+        output = {'result': 'success'}
+        key = str(key)
+
+        try:
+            self.myd.pop(key)
+        except Exception as ex:
+            output['result'] = 'error'
+            output['message'] = str(ex)
+
+        return json.dumps(output)
 
     def DELETE_INDEX(self):
-        #TODO
-        pass
-
-
+				# Clear dictionary
+        self.myd = dict()
+        return json.dumps({'result': 'success'})
